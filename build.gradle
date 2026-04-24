@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'br.edu.ufcg.eda'
@@ -21,4 +22,49 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+/*
+ Default main class (optional)
+*/
+application {
+    mainClass = 'br.edu.ufcg.eda.benchmark.GenerateArrays'
+}
+
+/*
+ Generate arrays
+ Usage:
+ gradlew generateArrays > data/arrays.data
+*/
+tasks.register('generateArrays', JavaExec) {
+    group = 'benchmark'
+    description = 'Generate benchmark arrays'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'br.edu.ufcg.eda.benchmark.GenerateArrays'
+}
+
+/*
+ Run algorithm benchmark
+ Usage:
+ gradlew calculateAlgorithm < data/arrays.data > data/results.data
+*/
+tasks.register('calculateAlgorithm', JavaExec) {
+    group = 'benchmark'
+    description = 'Run benchmark algorithms'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'br.edu.ufcg.eda.benchmark.CalculateAlgorithm'
+    standardInput = System.in
+}
+
+/*
+ Generate chart
+ Usage:
+ gradlew chartGenerator < data/results.data
+*/
+tasks.register('chartGenerator', JavaExec) {
+    group = 'benchmark'
+    description = 'Generate benchmark chart'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'br.edu.ufcg.eda.benchmark.ChartGenerator'
+    standardInput = System.in
 }
