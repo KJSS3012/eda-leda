@@ -56,6 +56,8 @@ public class ChartGenerator {
                 .build();
 
 
+
+
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
         chart.getStyler().setMarkerSize(6);
         chart.getStyler().setDefaultSeriesRenderStyle(

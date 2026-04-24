@@ -1,7 +1,8 @@
 package br.edu.ufcg.eda.benchmark;
 
-import br.edu.ufcg.eda.algorithms.sorting.Sorter;
+import br.edu.ufcg.eda.algorithms.Algorithm;
 import br.edu.ufcg.eda.algorithms.sorting.quadratic.BubbleSort;
+import br.edu.ufcg.eda.algorithms.sorting.quadratic.SelectionSort;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,9 +18,7 @@ public class CalculateAlgorithm {
             executions = Integer.parseInt(args[0]);
         }
 
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(System.in));
-
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line;
 
         System.out.println("Algorithm Time Samples");
@@ -34,18 +33,28 @@ public class CalculateAlgorithm {
 
             int[] array = parseArray(line);
 
-            testAlgorithm(
-                    "BubbleSort",
-                    new BubbleSort(),
+            testMultipleAlgorithms(
                     array,
-                    executions
+                    executions,
+                    new SelectionSort(),
+                    new BubbleSort()
             );
+        }
+    }
+
+    public static void testMultipleAlgorithms(int[] original, int executions, Algorithm... algorithms) {
+
+        for (Algorithm algorithm : algorithms) {
+
+            String algorithmName = algorithm.getClass().getSimpleName();
+
+            testAlgorithm(algorithmName, algorithm, original, executions);
         }
     }
 
     public static void testAlgorithm(
             String algorithmName,
-            Sorter algorithm,
+            Algorithm algorithm,
             int[] original,
             int executions
     ) {

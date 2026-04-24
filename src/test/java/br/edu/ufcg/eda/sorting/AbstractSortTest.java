@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.sorting;
 
-import br.edu.ufcg.eda.algorithms.sorting.Sorter;
+import br.edu.ufcg.eda.algorithms.Algorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractSortTest {
 
-    protected Sorter implementation;
+    protected Algorithm implementation;
 
-    protected abstract Sorter getImplementation();
+    protected abstract Algorithm getImplementation();
 
     @BeforeEach
     void setup() {

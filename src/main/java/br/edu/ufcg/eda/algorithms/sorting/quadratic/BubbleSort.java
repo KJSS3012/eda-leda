@@ -1,8 +1,8 @@
 package br.edu.ufcg.eda.algorithms.sorting.quadratic;
 
-import br.edu.ufcg.eda.algorithms.sorting.Sorter;
+import br.edu.ufcg.eda.algorithms.Algorithm;
 
-public class BubbleSort implements Sorter {
+public class BubbleSort implements Algorithm {
 
     @Override
     public void run(int[] array) {
