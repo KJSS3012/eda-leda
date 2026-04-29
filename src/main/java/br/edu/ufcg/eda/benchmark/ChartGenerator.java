@@ -1,18 +1,25 @@
 package br.edu.ufcg.eda.benchmark;
 
-import org.knowm.xchart.BitmapEncoder;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.style.Styler;
-import org.knowm.xchart.XYSeries;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
-import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class ChartGenerator {
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
 
         if (!scanner.hasNextLine()) {
@@ -20,64 +27,83 @@ public class ChartGenerator {
             return;
         }
 
+        // Pula o cabeçalho se houver
         scanner.nextLine();
 
-        Map<String, List<Integer>> xData = new LinkedHashMap<>();
-        Map<String, List<Long>> yData = new LinkedHashMap<>();
+        // O Dataset do JFreeChart funciona como um Map interno de séries
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        Map<String, XYSeries> algorithmSeries = new HashMap<>();
 
         while (scanner.hasNext()) {
+            try {
+                String algorithm = scanner.next();
+                if (!scanner.hasNextLong()) break;
+                long time = scanner.nextLong();
+                if (!scanner.hasNextInt()) break;
+                int samples = scanner.nextInt();
 
-            String algorithm = scanner.next();
-
-            if (!scanner.hasNextLong()) break;
-            long time = scanner.nextLong();
-
-            if (!scanner.hasNextInt()) break;
-            int samples = scanner.nextInt();
-
-            xData.putIfAbsent(algorithm, new ArrayList<>());
-            yData.putIfAbsent(algorithm, new ArrayList<>());
-
-            xData.get(algorithm).add(samples);
-            yData.get(algorithm).add(time);
+                // Cria a série para o algoritmo se ela ainda não existir
+                algorithmSeries.putIfAbsent(algorithm, new XYSeries(algorithm));
+                algorithmSeries.get(algorithm).add(samples, time);
+            } catch (Exception e) {
+                break;
+            }
         }
 
-        if (xData.isEmpty()) {
+        if (algorithmSeries.isEmpty()) {
             System.out.println("No benchmark data found.");
             return;
         }
 
-        XYChart chart = new XYChartBuilder()
-                .width(1200)
-                .height(800)
-                .title("Algorithm Benchmark")
-                .xAxisTitle("Samples")
-                .yAxisTitle("Time (ns)")
-                .build();
+        // Adiciona todas as séries criadas ao dataset principal
+        algorithmSeries.values().forEach(dataset::addSeries);
 
-
-
-
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
-        chart.getStyler().setMarkerSize(6);
-        chart.getStyler().setDefaultSeriesRenderStyle(
-                XYSeries.XYSeriesRenderStyle.Line
+        // Cria o gráfico de linhas (XY Line Chart)
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Algorithm Benchmark",   // Título
+                "Samples (N)",           // Eixo X
+                "Time (ns)",             // Eixo Y
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,                    // Legenda
+                true,                    // Tooltips
+                false                    // URLs
         );
 
-        for (String algorithm : xData.keySet()) {
-            chart.addSeries(
-                    algorithm,
-                    xData.get(algorithm),
-                    yData.get(algorithm)
-            );
+        // Customização Visual (Simulando o estilo detalhado)
+        XYPlot plot = chart.getXYPlot();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+
+        // Faz com que cada linha tenha pontos visíveis (markers)
+        for (int i = 0; i < dataset.getSeriesCount(); i++) {
+            renderer.setSeriesShapesVisible(i, true);
+            renderer.setSeriesStroke(i, new BasicStroke(2.0f)); // Linha um pouco mais grossa
         }
 
+        plot.setRenderer(renderer);
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setRangeGridlinePaint(Color.BLACK);
+        plot.setDomainGridlinePaint(Color.BLACK);
+
+        // Salva o arquivo PNG
         try {
-            BitmapEncoder.saveBitmap(chart, "benchmark-chart", BitmapEncoder.BitmapFormat.PNG);
+            ChartUtils.saveChartAsPNG(new File("benchmark-chart.png"), chart, 1200, 800);
+            System.out.println("Chart saved as benchmark-chart.png");
         } catch (Exception e) {
-            System.out.println("Could not save image.");
+            System.err.println("Error saving chart: " + e.getMessage());
         }
 
-        new SwingWrapper<>(chart).displayChart();
+        // Exibe na tela (Swing)
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Benchmark Visualization");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(1200, 800));
+            chartPanel.setMouseWheelEnabled(true); // Habilita zoom com o scroll
+            frame.add(chartPanel);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 }

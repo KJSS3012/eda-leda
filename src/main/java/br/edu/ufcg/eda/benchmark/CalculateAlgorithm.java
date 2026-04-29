@@ -2,6 +2,7 @@ package br.edu.ufcg.eda.benchmark;
 
 import br.edu.ufcg.eda.algorithms.Algorithm;
 import br.edu.ufcg.eda.algorithms.sorting.quadratic.BubbleSort;
+import br.edu.ufcg.eda.algorithms.sorting.quadratic.InsertionSort;
 import br.edu.ufcg.eda.algorithms.sorting.quadratic.SelectionSort;
 
 import java.io.BufferedReader;
@@ -12,7 +13,7 @@ public class CalculateAlgorithm {
 
     public static void main(String[] args) throws Exception {
 
-        int executions = 100;
+        int executions = 50;
 
         if (args.length > 0) {
             executions = Integer.parseInt(args[0]);
@@ -36,8 +37,7 @@ public class CalculateAlgorithm {
             testMultipleAlgorithms(
                     array,
                     executions,
-                    new SelectionSort(),
-                    new BubbleSort()
+                    new InsertionSort()
             );
         }
     }
