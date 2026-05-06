@@ -5,6 +5,10 @@ build/
 !**/src/test/**/build/
 .kotlin
 
+### Project ###
+src/main/java/br/edu/ufcg/eda/benchmark/data/*
+*.png
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
