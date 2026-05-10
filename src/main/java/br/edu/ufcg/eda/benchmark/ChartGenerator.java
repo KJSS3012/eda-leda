@@ -70,22 +70,65 @@ public class ChartGenerator {
                 false                    // URLs
         );
 
-        // Customização Visual (Simulando o estilo detalhado)
+        // ==========================================
+        // CUSTOMIZAÇÃO VISUAL (DARK THEME & FONTES)
+        // ==========================================
         XYPlot plot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-        // Faz com que cada linha tenha pontos visíveis (markers)
+        // Configuração de Fontes (Arial, tamanhos maiores)
+        Font titleFont = new Font("Arial", Font.BOLD, 24);
+        Font axisLabelFont = new Font("Arial", Font.BOLD, 16);
+        Font tickLabelFont = new Font("Arial", Font.PLAIN, 14);
+        Font legendFont = new Font("Arial", Font.PLAIN, 14);
+
+        chart.getTitle().setFont(titleFont);
+        plot.getDomainAxis().setLabelFont(axisLabelFont);
+        plot.getDomainAxis().setTickLabelFont(tickLabelFont);
+        plot.getRangeAxis().setLabelFont(axisLabelFont);
+        plot.getRangeAxis().setTickLabelFont(tickLabelFont);
+        chart.getLegend().setItemFont(legendFont);
+
+        // Configuração de Cores (Fundo Escuro e Textos Claros)
+        Color darkBackground = new Color(43, 43, 43);      // Fundo externo da janela
+        Color plotBackground = new Color(50, 53, 55);      // Fundo da área do gráfico
+        Color gridColor = new Color(100, 100, 100);        // Linhas de grade sutis
+        Color textColor = new Color(230, 230, 230);        // Texto quase branco
+
+        chart.setBackgroundPaint(darkBackground);
+        plot.setBackgroundPaint(plotBackground);
+
+        // Aplicando cor clara aos textos e eixos para contrastar com o fundo escuro
+        chart.getTitle().setPaint(textColor);
+        plot.getDomainAxis().setLabelPaint(textColor);
+        plot.getDomainAxis().setTickLabelPaint(textColor);
+        plot.getDomainAxis().setAxisLinePaint(textColor);
+
+        plot.getRangeAxis().setLabelPaint(textColor);
+        plot.getRangeAxis().setTickLabelPaint(textColor);
+        plot.getRangeAxis().setAxisLinePaint(textColor);
+
+        chart.getLegend().setBackgroundPaint(darkBackground);
+        chart.getLegend().setItemPaint(textColor);
+
+        // Adicionando margem para descolar a legenda da borda inferior (Top, Left, Bottom, Right)
+        chart.getLegend().setMargin(0, 20, 15, 0);
+
+        // Linhas de grade do gráfico
+        plot.setRangeGridlinePaint(gridColor);
+        plot.setDomainGridlinePaint(gridColor);
+
+        // Faz com que cada linha tenha pontos visíveis (markers) e ajusta a espessura
         for (int i = 0; i < dataset.getSeriesCount(); i++) {
             renderer.setSeriesShapesVisible(i, true);
-            renderer.setSeriesStroke(i, new BasicStroke(2.0f)); // Linha um pouco mais grossa
+            renderer.setSeriesStroke(i, new BasicStroke(2.5f)); // Linha um pouco mais grossa para maior destaque
         }
 
         plot.setRenderer(renderer);
-        plot.setBackgroundPaint(Color.WHITE);
-        plot.setRangeGridlinePaint(Color.BLACK);
-        plot.setDomainGridlinePaint(Color.BLACK);
 
-        // Salva o arquivo PNG
+        // ==========================================
+        // SALVAR E EXIBIR
+        // ==========================================
         try {
             ChartUtils.saveChartAsPNG(new File("benchmark-chart.png"), chart, 1200, 800);
             System.out.println("Chart saved as benchmark-chart.png");
@@ -97,9 +140,14 @@ public class ChartGenerator {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Benchmark Visualization");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            // Fundo da janela Swing
+            frame.getContentPane().setBackground(darkBackground);
+
             ChartPanel chartPanel = new ChartPanel(chart);
             chartPanel.setPreferredSize(new Dimension(1200, 800));
             chartPanel.setMouseWheelEnabled(true); // Habilita zoom com o scroll
+
             frame.add(chartPanel);
             frame.pack();
             frame.setLocationRelativeTo(null);

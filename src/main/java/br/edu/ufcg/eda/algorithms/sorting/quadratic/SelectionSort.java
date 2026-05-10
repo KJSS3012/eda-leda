@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.algorithms.sorting.quadratic;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 
 public class SelectionSort implements Algorithm {
     @Override
@@ -17,5 +17,10 @@ public class SelectionSort implements Algorithm {
             array[i] = array[smaller];
             array[smaller] = aux;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "SelectionSort";
     }
 }

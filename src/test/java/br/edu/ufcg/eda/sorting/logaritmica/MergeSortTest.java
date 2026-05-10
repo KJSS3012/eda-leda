@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.sorting.logaritmica;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 import br.edu.ufcg.eda.algorithms.sorting.logaritmica.MergeSort;
 import br.edu.ufcg.eda.sorting.AbstractSortTest;
 

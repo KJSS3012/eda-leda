@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.sorting;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

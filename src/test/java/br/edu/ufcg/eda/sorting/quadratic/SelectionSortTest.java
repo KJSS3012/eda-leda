@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.sorting.quadratic;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 import br.edu.ufcg.eda.algorithms.sorting.quadratic.SelectionSort;
 import br.edu.ufcg.eda.sorting.AbstractSortTest;
 

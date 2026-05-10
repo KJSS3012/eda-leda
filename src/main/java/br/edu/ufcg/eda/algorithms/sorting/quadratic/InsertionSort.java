@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.algorithms.sorting.quadratic;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 
 public class InsertionSort implements Algorithm {
 
@@ -17,5 +17,10 @@ public class InsertionSort implements Algorithm {
                 j--;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "InsertionSort";
     }
 }

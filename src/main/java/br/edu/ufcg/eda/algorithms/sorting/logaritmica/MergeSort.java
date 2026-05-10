@@ -1,6 +1,6 @@
 package br.edu.ufcg.eda.algorithms.sorting.logaritmica;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 
 public class MergeSort implements Algorithm {
     @Override
@@ -50,5 +50,10 @@ public class MergeSort implements Algorithm {
             i++;
             k++;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "MergeSort";
     }
 }

@@ -2,7 +2,7 @@ package br.edu.ufcg.eda.sorting.quadratic;
 
 import br.edu.ufcg.eda.algorithms.sorting.quadratic.BubbleSort;
 import br.edu.ufcg.eda.sorting.AbstractSortTest;
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
 
 public class BubbleSortTest extends AbstractSortTest {
     @Override

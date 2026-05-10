@@ -1,7 +1,13 @@
 package br.edu.ufcg.eda.benchmark;
 
-import br.edu.ufcg.eda.algorithms.Algorithm;
+import br.edu.ufcg.eda.algorithms.interfaces.Algorithm;
+import br.edu.ufcg.eda.algorithms.sorting.logaritmica.QuickSort;
 import br.edu.ufcg.eda.algorithms.sorting.quadratic.SelectionSort;
+import br.edu.ufcg.eda.algorithms.sorting.strategy.partition.HoarePartition;
+import br.edu.ufcg.eda.algorithms.sorting.strategy.partition.LomutoPartition;
+import br.edu.ufcg.eda.algorithms.sorting.strategy.pivot.FirstPivot;
+import br.edu.ufcg.eda.algorithms.sorting.strategy.pivot.MedianOfThreePivot;
+import br.edu.ufcg.eda.algorithms.sorting.strategy.pivot.RandomPivot;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -42,7 +48,14 @@ public class CalculateAlgorithm {
         }
 
         Algorithm[] algorithms = {
-                new SelectionSort(),
+                //new QuickSort(new LomutoPartition(new FirstPivot())),
+                //new QuickSort(new LomutoPartition(new RandomPivot())),
+                //new QuickSort(new LomutoPartition(new MedianOfThreePivot())),
+
+                //new QuickSort(new HoarePartition(new FirstPivot())),
+                //new QuickSort(new HoarePartition(new RandomPivot())),
+                //new QuickSort(new HoarePartition(new MedianOfThreePivot()))
+                new SelectionSort()
         };
 
         System.out.println("Algorithm Time Samples");
@@ -64,7 +77,7 @@ public class CalculateAlgorithm {
             System.gc();
 
             for (int[] array : arrays) {
-                testAlgorithm(algorithm.getClass().getSimpleName(), algorithm, array, executions);
+                testAlgorithm(algorithm.toString(), algorithm, array, executions);
             }
         }
     }
